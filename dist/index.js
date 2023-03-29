@@ -72,6 +72,7 @@ function run(platform = undefined) {
         const binDir = path_1.default.join(userDir, binRelativePath);
         const exportTemplateUrl = (0, utils_1.getGodotUrl)(version, platform, useDotnet, true);
         const exportTemplatePath = (0, utils_1.getExportTemplatePath)(version, platform, useDotnet);
+        const exportTemplateDownloadPath = path_1.default.join(downloadsDir, 'export_templates.zip');
         // Log values
         core.startGroup('🤖 Godot Action Inputs');
         core.info(`🤖 Godot version: ${version}`);
@@ -83,6 +84,9 @@ function run(platform = undefined) {
         core.info(`📥 Godot download path: ${godotDownloadPath}`);
         core.info(`📦 Godot installation directory: ${installationDir}`);
         core.info(`🤖 Godot installation path: ${godotInstallationPath}`);
+        core.info(`🤖 Export Template url: ${exportTemplateUrl}`);
+        core.info(`📥 Export Template download path: ${exportTemplateDownloadPath}`);
+        core.info(`🤖 Export Template Path: ${exportTemplatePath}`);
         core.info(`📂 Bin directory: ${binDir}`);
         core.info(`🤖 GodotSharp release: ${godotSharpRelease}`);
         core.endGroup();
@@ -107,8 +111,8 @@ function run(platform = undefined) {
                 const godotDownloadedPath = yield toolsCache.downloadTool(godotUrl, godotDownloadPath);
                 core.info(`✅ Godot downloaded to ${godotDownloadedPath}`);
                 core.endGroup();
-                core.startGroup(`📥 Downloading Export Templates to ${downloadsDir}...`);
-                const templateDownloadedPath = yield toolsCache.downloadTool(exportTemplateUrl, downloadsDir);
+                core.startGroup(`📥 Downloading Export Templates to ${exportTemplateDownloadPath}...`);
+                const templateDownloadedPath = yield toolsCache.downloadTool(exportTemplateUrl, exportTemplateDownloadPath);
                 core.info(`✅ Export Templates downloaded to ${templateDownloadedPath}`);
                 core.endGroup();
                 // Extract Godot
