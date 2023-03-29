@@ -129,9 +129,9 @@ function run(platform = undefined) {
                 const exportTemplateExtractedPath = yield toolsCache.extractZip(templateDownloadedPath, exportTemplatePath);
                 core.info(`✅ Export Templates extracted to ${exportTemplateExtractedPath}`);
                 core.endGroup();
-                // Show extracted Export Template files recursively and list executables.
+                // Show extracted Export Template files recursively
                 core.startGroup(`📄 Showing extracted files recursively...`);
-                executables = yield (0, utils_1.findExecutablesRecursively)(platform, exportTemplatePath, '');
+                yield (0, utils_1.findExecutablesRecursively)(platform, exportTemplatePath, '');
                 core.info(`✅ Files shown`);
                 core.endGroup();
                 // Save extracted Godot contents to cache
