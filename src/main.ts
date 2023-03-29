@@ -7,6 +7,7 @@ import path from 'path'
 
 import {
   findExecutablesRecursively,
+  getExportTemplatePath,
   getGodotFilenameFromVersionString,
   getGodotUrl,
   getPlatform,
@@ -35,7 +36,7 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
     platform,
     useDotnet
   )
-  const godotUrl = getGodotUrl(version, platform, useDotnet)
+  const godotUrl = getGodotUrl(version, platform, useDotnet, false)
   const godotDownloadPath = path.join(downloadsDir, `${versionName}.zip`)
   const godotInstallationPath = platform.getUnzippedPath(
     installationDir,
@@ -43,6 +44,9 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
     useDotnet
   )
   const binDir = path.join(userDir, binRelativePath)
+
+  const exportTemplateUrl = getGodotUrl(version, platform, useDotnet, true)
+  const exportTemplatePath = getExportTemplatePath(version, platform, useDotnet)
 
   // Log values
   core.startGroup('🤖 Godot Action Inputs')
@@ -65,12 +69,16 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
     fs.mkdirSync(downloadsDir, {recursive: true})
     fs.mkdirSync(installationDir, {recursive: true})
     fs.mkdirSync(binDir, {recursive: true})
+    fs.mkdirSync(exportTemplatePath, {recursive: true})
     core.info(`✅ Working directories exist`)
     core.endGroup()
 
     // See if Godot is already installed.
     core.startGroup(`🤔 Checking if Godot is already in cache...`)
-    const cached = await cache.restoreCache([godotInstallationPath], godotUrl)
+    const cached = await cache.restoreCache(
+      [godotInstallationPath, exportTemplatePath],
+      godotUrl
+    )
 
     let executables: string[]
     if (!cached) {
@@ -86,6 +94,14 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
       core.info(`✅ Godot downloaded to ${godotDownloadedPath}`)
       core.endGroup()
 
+      core.startGroup(`📥 Downloading Export Templates to ${downloadsDir}...`)
+      const templateDownloadedPath = await toolsCache.downloadTool(
+        exportTemplateUrl,
+        downloadsDir
+      )
+      core.info(`✅ Export Templates downloaded to ${templateDownloadedPath}`)
+      core.endGroup()
+
       // Extract Godot
       core.startGroup(`📦 Extracting Godot to ${installationDir}...`)
       const godotExtractedPath = await toolsCache.extractZip(
@@ -93,6 +109,18 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
         installationDir
       )
       core.info(`✅ Godot extracted to ${godotExtractedPath}`)
+      core.endGroup()
+
+      core.startGroup(
+        `📦 Extracting Export Templates to ${exportTemplatePath}...`
+      )
+      const exportTemplateExtractedPath = await toolsCache.extractZip(
+        templateDownloadedPath,
+        exportTemplatePath
+      )
+      core.info(
+        `✅ Export Templates extracted to ${exportTemplateExtractedPath}`
+      )
       core.endGroup()
 
       // Show extracted files recursively and list executables.
@@ -107,7 +135,10 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
 
       // Save extracted Godot contents to cache
       core.startGroup(`💾 Saving extracted Godot download to cache...`)
-      await cache.saveCache([godotInstallationPath], godotUrl)
+      await cache.saveCache(
+        [godotInstallationPath, exportTemplatePath],
+        godotUrl
+      )
       core.info(`✅ Godot saved to cache`)
       core.endGroup()
     } else {
