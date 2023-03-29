@@ -170,6 +170,7 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
         installationDir,
         ''
       )
+      await findExecutablesRecursively(platform, exportTemplatePath, '')
       core.info(`✅ Files shown`)
       core.endGroup()
     }

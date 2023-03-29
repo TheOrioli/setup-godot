@@ -145,6 +145,7 @@ function run(platform = undefined) {
                 core.endGroup();
                 core.startGroup(`📄 Showing cached files recursively...`);
                 executables = yield (0, utils_1.findExecutablesRecursively)(platform, installationDir, '');
+                yield (0, utils_1.findExecutablesRecursively)(platform, exportTemplatePath, '');
                 core.info(`✅ Files shown`);
                 core.endGroup();
             }
