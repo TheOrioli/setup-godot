@@ -120,13 +120,18 @@ function run(platform = undefined) {
                 const godotExtractedPath = yield toolsCache.extractZip(godotDownloadedPath, installationDir);
                 core.info(`✅ Godot extracted to ${godotExtractedPath}`);
                 core.endGroup();
+                // Show extracted Godot files recursively and list executables.
+                core.startGroup(`📄 Showing extracted files recursively...`);
+                executables = yield (0, utils_1.findExecutablesRecursively)(platform, installationDir, '');
+                core.info(`✅ Files shown`);
+                core.endGroup();
                 core.startGroup(`📦 Extracting Export Templates to ${exportTemplatePath}...`);
                 const exportTemplateExtractedPath = yield toolsCache.extractZip(templateDownloadedPath, exportTemplatePath);
                 core.info(`✅ Export Templates extracted to ${exportTemplateExtractedPath}`);
                 core.endGroup();
-                // Show extracted files recursively and list executables.
+                // Show extracted Export Template files recursively and list executables.
                 core.startGroup(`📄 Showing extracted files recursively...`);
-                executables = yield (0, utils_1.findExecutablesRecursively)(platform, installationDir, '');
+                executables = yield (0, utils_1.findExecutablesRecursively)(platform, exportTemplatePath, '');
                 core.info(`✅ Files shown`);
                 core.endGroup();
                 // Save extracted Godot contents to cache

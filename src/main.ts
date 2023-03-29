@@ -120,6 +120,16 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
       core.info(`✅ Godot extracted to ${godotExtractedPath}`)
       core.endGroup()
 
+      // Show extracted Godot files recursively and list executables.
+      core.startGroup(`📄 Showing extracted files recursively...`)
+      executables = await findExecutablesRecursively(
+        platform,
+        installationDir,
+        ''
+      )
+      core.info(`✅ Files shown`)
+      core.endGroup()
+
       core.startGroup(
         `📦 Extracting Export Templates to ${exportTemplatePath}...`
       )
@@ -132,11 +142,11 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
       )
       core.endGroup()
 
-      // Show extracted files recursively and list executables.
+      // Show extracted Export Template files recursively and list executables.
       core.startGroup(`📄 Showing extracted files recursively...`)
       executables = await findExecutablesRecursively(
         platform,
-        installationDir,
+        exportTemplatePath,
         ''
       )
       core.info(`✅ Files shown`)
