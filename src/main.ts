@@ -141,7 +141,7 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
         `✅ Export Templates extracted to ${exportTemplateExtractedPath}`
       )
       fs.renameSync(
-        path.join(path.dirname(exportTemplateExtractedPath), 'templates'),
+        path.join(exportTemplateExtractedPath, 'templates'),
         exportTemplatePath
       )
       core.info(

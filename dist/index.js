@@ -128,7 +128,7 @@ function run(platform = undefined) {
                 core.startGroup(`📦 Extracting Export Templates to ${exportTemplatePath}...`);
                 const exportTemplateExtractedPath = yield toolsCache.extractZip(templateDownloadedPath, path_1.default.dirname(exportTemplatePath));
                 core.info(`✅ Export Templates extracted to ${exportTemplateExtractedPath}`);
-                fs.renameSync(path_1.default.join(path_1.default.dirname(exportTemplateExtractedPath), 'templates'), exportTemplatePath);
+                fs.renameSync(path_1.default.join(exportTemplateExtractedPath, 'templates'), exportTemplatePath);
                 core.info(`✅ ${path_1.default.join(path_1.default.dirname(exportTemplateExtractedPath), 'templates')} moved to ${exportTemplatePath}`);
                 core.endGroup();
                 // Show extracted Export Template files recursively
