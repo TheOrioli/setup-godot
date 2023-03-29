@@ -76,7 +76,6 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
     fs.mkdirSync(downloadsDir, {recursive: true})
     fs.mkdirSync(installationDir, {recursive: true})
     fs.mkdirSync(binDir, {recursive: true})
-    fs.mkdirSync(exportTemplatePath, {recursive: true})
     core.info(`✅ Working directories exist`)
     core.endGroup()
 

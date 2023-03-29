@@ -96,7 +96,6 @@ function run(platform = undefined) {
             fs.mkdirSync(downloadsDir, { recursive: true });
             fs.mkdirSync(installationDir, { recursive: true });
             fs.mkdirSync(binDir, { recursive: true });
-            fs.mkdirSync(exportTemplatePath, { recursive: true });
             core.info(`✅ Working directories exist`);
             core.endGroup();
             // See if Godot is already installed.
