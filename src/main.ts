@@ -76,7 +76,6 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
     fs.mkdirSync(downloadsDir, {recursive: true})
     fs.mkdirSync(installationDir, {recursive: true})
     fs.mkdirSync(binDir, {recursive: true})
-    fs.mkdirSync(exportTemplatePath, {recursive: true})
     core.info(`✅ Working directories exist`)
     core.endGroup()
 
@@ -135,10 +134,20 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
       )
       const exportTemplateExtractedPath = await toolsCache.extractZip(
         templateDownloadedPath,
-        exportTemplatePath
+        path.dirname(exportTemplatePath)
       )
       core.info(
         `✅ Export Templates extracted to ${exportTemplateExtractedPath}`
+      )
+      fs.renameSync(
+        path.join(exportTemplateExtractedPath, 'templates'),
+        exportTemplatePath
+      )
+      core.info(
+        `✅ ${path.join(
+          path.dirname(exportTemplateExtractedPath),
+          'templates'
+        )} moved to ${exportTemplatePath}`
       )
       core.endGroup()
 
