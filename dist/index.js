@@ -126,8 +126,10 @@ function run(platform = undefined) {
                 core.info(`✅ Files shown`);
                 core.endGroup();
                 core.startGroup(`📦 Extracting Export Templates to ${exportTemplatePath}...`);
-                const exportTemplateExtractedPath = yield toolsCache.extractZip(templateDownloadedPath, exportTemplatePath);
+                const exportTemplateExtractedPath = yield toolsCache.extractZip(templateDownloadedPath);
                 core.info(`✅ Export Templates extracted to ${exportTemplateExtractedPath}`);
+                fs.renameSync(path_1.default.join(exportTemplateExtractedPath, 'templates'), exportTemplatePath);
+                core.info(`✅ ${path_1.default.join(exportTemplateExtractedPath, 'templates')} moved to ${exportTemplateExtractedPath}`);
                 core.endGroup();
                 // Show extracted Export Template files recursively
                 core.startGroup(`📄 Showing extracted files recursively...`);
