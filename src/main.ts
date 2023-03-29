@@ -47,6 +47,10 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
 
   const exportTemplateUrl = getGodotUrl(version, platform, useDotnet, true)
   const exportTemplatePath = getExportTemplatePath(version, platform, useDotnet)
+  const exportTemplateDownloadPath = path.join(
+    downloadsDir,
+    'export_templates.zip'
+  )
 
   // Log values
   core.startGroup('🤖 Godot Action Inputs')
@@ -59,6 +63,9 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
   core.info(`📥 Godot download path: ${godotDownloadPath}`)
   core.info(`📦 Godot installation directory: ${installationDir}`)
   core.info(`🤖 Godot installation path: ${godotInstallationPath}`)
+  core.info(`🤖 Export Template url: ${exportTemplateUrl}`)
+  core.info(`📥 Export Template download path: ${exportTemplateDownloadPath}`)
+  core.info(`🤖 Export Template Path: ${exportTemplatePath}`)
   core.info(`📂 Bin directory: ${binDir}`)
   core.info(`🤖 GodotSharp release: ${godotSharpRelease}`)
   core.endGroup()
@@ -94,10 +101,12 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
       core.info(`✅ Godot downloaded to ${godotDownloadedPath}`)
       core.endGroup()
 
-      core.startGroup(`📥 Downloading Export Templates to ${downloadsDir}...`)
+      core.startGroup(
+        `📥 Downloading Export Templates to ${exportTemplateDownloadPath}...`
+      )
       const templateDownloadedPath = await toolsCache.downloadTool(
         exportTemplateUrl,
-        downloadsDir
+        exportTemplateDownloadPath
       )
       core.info(`✅ Export Templates downloaded to ${templateDownloadedPath}`)
       core.endGroup()
