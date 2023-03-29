@@ -135,15 +135,18 @@ async function run(platform: Platform | undefined = undefined): Promise<void> {
       )
       const exportTemplateExtractedPath = await toolsCache.extractZip(
         templateDownloadedPath,
-        downloadsDir
+        path.dirname(exportTemplatePath)
       )
       core.info(
         `✅ Export Templates extracted to ${exportTemplateExtractedPath}`
       )
-      fs.renameSync(path.join(downloadsDir, 'templates'), exportTemplatePath)
+      fs.renameSync(
+        path.join(path.dirname(exportTemplateExtractedPath), 'templates'),
+        exportTemplatePath
+      )
       core.info(
         `✅ ${path.join(
-          downloadsDir,
+          path.dirname(exportTemplateExtractedPath),
           'templates'
         )} moved to ${exportTemplatePath}`
       )
